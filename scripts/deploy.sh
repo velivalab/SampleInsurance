@@ -9,7 +9,7 @@ echo "Version to be downloaded is : $VERSION_NO"
 cd /tmp
 
 echo "Downloading InsuranceManagement war version $VERSION_NO"
-wget "http://ec2-52-24-142-120.us-west-2.compute.amazonaws.com:8081/nexus/content/repositories/releases/content/repositories/releases/org/cdsdemo/InsuranceManagement/$VERSION_NO/InsuranceManagement-$VERSION_NO.war"
+wget "http://ec2-35-166-232-252.us-west-2.compute.amazonaws.com:8081/nexus/content/repositories/releases/org/cdsdemo/InsuranceManagement/$VERSION_NO/InsuranceManagement-$VERSION_NO.war"
 
 if [ -f InsuranceManagement-$VERSION_NO.war ]; then
         echo "Downloaded Insuurance management war version $VERSION_NO"
