@@ -20,7 +20,7 @@ node {
 	stage('Push Binaries') {
 	    junit 'target/surefire-reports/*.xml'
 	    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'target/site/jacoco', reportFiles: 'index.html', reportName: 'Code Coverage'])          
-	    performanceReport compareBuildPrevious: false, configType: 'PRT', errorFailedThreshold: 80, errorUnstableResponseTimeThreshold: '', errorUnstableThreshold: 80, failBuildIfNoResultFile: false, modeOfThreshold: false, modePerformancePerTestCase: true, modeThroughput: false, nthBuildNumber: 0, parsers: [[$class: 'JUnitParser', glob: '**/TEST-*.xml']], relativeFailedThresholdNegative: -80.0, relativeFailedThresholdPositive: 80.0, relativeUnstableThresholdNegative: -80.0, relativeUnstableThresholdPositive: 80.0
+	    performanceReport compareBuildPrevious: false, configType: 'PRT', errorFailedThreshold: 0, errorUnstableResponseTimeThreshold: '', errorUnstableThreshold: 0, failBuildIfNoResultFile: false, modeOfThreshold: false, modePerformancePerTestCase: true, modeThroughput: false, nthBuildNumber: 0, parsers: [[$class: 'JUnitParser', glob: '**/TEST-*.xml']], relativeFailedThresholdNegative: -0.0, relativeFailedThresholdPositive: 0.0, relativeUnstableThresholdNegative: -0.0, relativeUnstableThresholdPositive: 0.0
 	    nexusArtifactUploader artifacts: [[artifactId: 'autoclaim', classifier: '', file: 'target/autoclaim.war', type: 'war']], credentialsId: 'nexus', groupId: 'com.example', nexusUrl: 'ec2-35-166-232-252.us-west-2.compute.amazonaws.com:8081/nexus', nexusVersion: 'nexus2', protocol: 'http', repository: 'releases', version: '${BUILD_NUMBER}'
 	}
 }
