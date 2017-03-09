@@ -21,6 +21,7 @@ if [ -f InsuranceManagement-$VERSION_NO.war ]; then
         curl -v --basic --user admin:devops --upload-file InsuranceManagement.war "http://manager-script:changeit@$TOMCAT_SERVER_URL/manager/text/deploy?path=/InsuranceManagement&update=true"
         echo "Deployment Successful"
         rm -f InsuranceManagement*.war
+        echo "Downloaded binaries deleted from tmp folder"
 else
         echo "Deployment Failed"
 fi
