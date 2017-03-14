@@ -9,7 +9,7 @@ echo "Version to be downloaded is : $VERSION_NO"
 cd /tmp
 
 echo "Downloading autoclaim war version $VERSION_NO"
-wget "http://ec2-35-166-232-252.us-west-2.compute.amazonaws.com:8081/nexus/content/repositories/releases/com/example/autoclaim/$VERSION_NO/autoclaim-$VERSION_NO.war"
+wget "http://ec2-35-167-7-136.us-west-2.compute.amazonaws.com:8081/nexus/content/repositories/releases/com/example/autoclaim/$VERSION_NO/autoclaim-$VERSION_NO.war"
 
 if [ -f autoclaim-$VERSION_NO.war ]; then
         echo "Downloaded autoclaim war version $VERSION_NO"
