@@ -23,5 +23,5 @@ if [ -f autoclaim-$VERSION_NO.war ]; then
         rm -f autoclaim*.war
         echo "Downloaded binaries deleted from tmp folder"
 else
-        echo "Deployment Failed"
+        echo "Deployment Failed because autoclaim binaries of version $VERSION_NO could not be found"
 fi
