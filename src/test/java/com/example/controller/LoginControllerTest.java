@@ -9,15 +9,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @RunWith(PowerMockRunner.class)
 @WebMvcTest(LoginController.class)
-@AutoConfigureTestDatabase(connection =  EmbeddedDatabaseConnection.H2)
 public class LoginControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
