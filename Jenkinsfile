@@ -1,19 +1,31 @@
 node {  
-	def mvnHome = tool 'Maven3.6.3'
+	def mvnHome = tool 'Maven'
 	echo "${mvnHome}"
 	
 	stage('Checkout') {
+		snDevOpsStep()
 		checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'git@github.com:bvelivala/SampleInsurance.git']]]
-		sh '/usr/local/apache-maven/apache-maven-3.3.9/bin/mvn clean'
+		sh 'mvn clean'
     	}
 	
 	stage('Build') {
-		sh '/usr/local/Cellar/maven/3.6.3_1/libexec/bin/mvn install -DskipTests'
-	}	
-	
-	stage('Sonar Code Analysis') {
-		withSonarQubeEnv('Sonar') {
-			sh "/usr/local/Cellar/maven/3.6.3_1/libexec/bin/mvn sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=admin -Dsonar.password=admin13 -Dsonar.github.repository=pmbharsh/SampleInsurance -Dsonar.projectName=Autoclaim_${BUILD_NUMBER} -Dsonar.projectVersion=${BUILD_NUMBER} -Dsonar.sources=src/main"
-		}
+		snDevOpsStep()
+		sh 'mvn compile'
 	}
+	
+	stage('Test') {
+		snDevOpsStep()
+		sh 'mvn test'
+	}
+	
+	stage('Deploy') {
+		snDevOpsStep()
+		sh 'echo Deploy Stage'
+	}
+	
+	//stage('Sonar Code Analysis') {
+	//	withSonarQubeEnv('Sonar') {
+	//		sh "/usr/local/Cellar/maven/3.6.3_1/libexec/bin/mvn sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=admin -Dsonar.password=admin13 -Dsonar.github.repository=pmbharsh/SampleInsurance -Dsonar.projectName=Autoclaim_${BUILD_NUMBER} -Dsonar.projectVersion=${BUILD_NUMBER} -Dsonar.sources=src/main"
+	//	}
+	//}
 }
