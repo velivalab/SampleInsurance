@@ -15,7 +15,7 @@ node {
 	
 	stage('Test') {
 		snDevOpsStep()
-		sh 'mvn test'
+		sh 'mvn test -Dmaven.test.failure.ignore=true'
 	}
 	
 	stage('Deploy') {
