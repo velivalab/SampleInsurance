@@ -1,0 +1,19 @@
+node {  
+	def mvnHome = tool 'Maven3.6.3'
+	echo "${mvnHome}"
+	
+	stage('Checkout') {
+		checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'git@github.com:bvelivala/SampleInsurance.git']]]
+		sh '/usr/local/apache-maven/apache-maven-3.3.9/bin/mvn clean'
+    	}
+	
+	stage('Build') {
+		sh '/usr/local/Cellar/maven/3.6.3_1/libexec/bin/mvn install -DskipTests'
+	}	
+	
+	stage('Sonar Code Analysis') {
+		withSonarQubeEnv('Sonar') {
+			sh "/usr/local/Cellar/maven/3.6.3_1/libexec/bin/mvn sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=admin -Dsonar.password=admin13 -Dsonar.github.repository=pmbharsh/SampleInsurance -Dsonar.projectName=Autoclaim_${BUILD_NUMBER} -Dsonar.projectVersion=${BUILD_NUMBER} -Dsonar.sources=src/main"
+		}
+	}
+}
