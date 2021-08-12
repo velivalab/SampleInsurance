@@ -17,4 +17,4 @@ jobs:
         method: 'POST'
         username: ${{ secrets.SN_DEVOPS_USER }}
         password: ${{ secrets.SN_DEVOPS_PASSWD }}
-        data: "{\"apps\":[{\"id\":\"602252962062\",\"nativeId\":\"602252962062\",\"name\":\"Workspace 1::Third Project\",\"url\":\"https:\/\/rally1.rallydev.com\/slm\/webservice\/v2.x\/project\/602252962062\",\"toolId\":\"d510bba91b5d7050b9df4338b04bcb6c\",\"tool\":\"d510bba91b5d7050b9df4338b04bcb6c\",\"track\":\"true\"}]}"
+        data: '{\"apps\":[{\"id\":\"602252962062\",\"nativeId\":\"602252962062\",\"name\":\"Workspace 1::Third Project\",\"url\":\"https:\/\/rally1.rallydev.com\/slm\/webservice\/v2.x\/project\/602252962062\",\"toolId\":\"d510bba91b5d7050b9df4338b04bcb6c\",\"tool\":\"d510bba91b5d7050b9df4338b04bcb6c\",\"track\":\"true\"}]}'
