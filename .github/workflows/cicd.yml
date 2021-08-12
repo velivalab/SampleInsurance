@@ -4,12 +4,25 @@ on: [push]
 
 jobs:
   build:
+  
     name: Build
     runs-on: ubuntu-latest
+    
     steps:
-    - uses: actions/checkout@v2
+    
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+      
     - name: Maven Build
       run: mvn clean install -DskipTests=true
+      
     - name: Send Notification
       uses: fjogeleit/http-request-action@master
       with:
@@ -18,4 +31,4 @@ jobs:
         contentType: 'application/json'
         username: ${{ secrets.SN_DEVOPS_USER }}
         password: ${{ secrets.SN_DEVOPS_PASSWD }}
-        data: '{"apps":[{"id":"602252962066","nativeId":"602252962066","name": "Workspace 1::Sixth Project","url":"https://rally1.rallydev.com/slm/webservice/v2.x/project/602252962066","toolId":"d510bba91b5d7050b9df4338b04bcb6c","tool":"d510bba91b5d7050b9df4338b04bcb6c","track":"true"}]}'
+        data: '{"apps":[{"id":"602252962067","nativeId":"602252962067","name": "Workspace 1::Seventh Project","url":"https://rally1.rallydev.com/slm/webservice/v2.x/project/602252962067","toolId":"d510bba91b5d7050b9df4338b04bcb6c","tool":"d510bba91b5d7050b9df4338b04bcb6c","track":"true"}]}'
