@@ -15,6 +15,7 @@ jobs:
       with:
         url: '${{ secrets.SN_INSTANCE_URL }}/api/sn_devops/devops/onboarding/app'
         method: 'POST'
+        contentType: 'application/json'
         username: ${{ secrets.SN_DEVOPS_USER }}
         password: ${{ secrets.SN_DEVOPS_PASSWD }}
-        data: '{\"apps\":[{\"id\":\"602252962065\",\"nativeId\":\"602252962065\",\"name\":\"Workspace 1::Fifth Project\",\"url\":\"https:\/\/rally1.rallydev.com\/slm\/webservice\/v2.x\/project\/602252962065\",\"toolId\":\"d510bba91b5d7050b9df4338b04bcb6c\",\"tool\":\"d510bba91b5d7050b9df4338b04bcb6c\",\"track\":\"true\"}]}'
+        data: '{"apps":[{"id":"602252962066","nativeId":"602252962066","name": "Workspace 1::Sixth Project","url":"https://rally1.rallydev.com/slm/webservice/v2.x/project/602252962066","toolId":"d510bba91b5d7050b9df4338b04bcb6c","tool":"d510bba91b5d7050b9df4338b04bcb6c","track":"true"}]}'
