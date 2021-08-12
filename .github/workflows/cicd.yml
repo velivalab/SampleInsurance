@@ -10,11 +10,11 @@ jobs:
     - uses: actions/checkout@v2
     - name: Maven Build
       run: mvn clean install -DskipTests=true
-    - name: Build
+    - name: Send Notification
       uses: fjogeleit/http-request-action@master
       with:
         url: '${{ secrets.SN_INSTANCE_URL }}/api/sn_devops/devops/onboarding/app'
         method: 'POST'
         username: ${{ secrets.SN_DEVOPS_USER }}
         password: ${{ secrets.SN_DEVOPS_PASSWD }}
-        data: '{\"apps\":[{\"id\":\"602252962062\",\"nativeId\":\"602252962062\",\"name\":\"Workspace 1::Third Project\",\"url\":\"https:\/\/rally1.rallydev.com\/slm\/webservice\/v2.x\/project\/602252962062\",\"toolId\":\"d510bba91b5d7050b9df4338b04bcb6c\",\"tool\":\"d510bba91b5d7050b9df4338b04bcb6c\",\"track\":\"true\"}]}'
+        data: '{\"apps\":[{\"id\":\"602252962065\",\"nativeId\":\"602252962065\",\"name\":\"Workspace 1::Fifth Project\",\"url\":\"https:\/\/rally1.rallydev.com\/slm\/webservice\/v2.x\/project\/602252962065\",\"toolId\":\"d510bba91b5d7050b9df4338b04bcb6c\",\"tool\":\"d510bba91b5d7050b9df4338b04bcb6c\",\"track\":\"true\"}]}'
