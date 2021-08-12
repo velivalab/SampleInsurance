@@ -9,4 +9,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Maven Build
-      run: mvn clean install
+      run: mvn clean install -DskipTests=true
