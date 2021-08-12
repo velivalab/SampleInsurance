@@ -2,6 +2,9 @@ name: cicd
 
 on: [push]
 
+env: 
+     MAVEN_OPTS: "-Dmaven.repo.local=${{ github.workspace }}/repository"
+
 jobs:
   build:
   
@@ -13,9 +16,11 @@ jobs:
     - name: Cache Maven packages
       uses: actions/cache@v2
       with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
+        path: "${{ github.workspace }}/repository"
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+      
     
     - name: Checkout
       uses: actions/checkout@v2
