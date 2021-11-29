@@ -2,6 +2,7 @@ node {
 	def mvnHome = tool 'Maven3.6.3'
 	echo "${mvnHome}"
 	
+	
 	stage('Checkout') {
 		checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'git@github.com:bvelivala/SampleInsurance.git']]]
 		sh '/usr/local/apache-maven/apache-maven-3.3.9/bin/mvn clean'
