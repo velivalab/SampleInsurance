@@ -1,41 +1,27 @@
 name: CI
 on:
-    push:
-      branches: [master]
-    pull_request:
-      branches: [master]
+  push:
+    branches: ['develop', 'master']
 jobs:
-    build:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v2
-        - name: Cache files
-          uses: actions/cache@v2
-          with:
-              path: |
-                  ~/.sonar
-              key: ${{ runner.os }}-sonar
-              restore-keys: ${{ runner.os }}-sonar
-        - name: Run Codescan On Push
-          if: github.event_name == 'push'
-          uses: codescan-io/codescan-scanner-action@1.2
-          with:
-            organization: ‘harsh-pmb’
-            projectKey: ‘autoclaim’       
-            login: '48b5818f252d413b7c8dbbbb7e1c2f39eca251e0'
-        - name: Run Codescan On PR
-          if: github.event_name == 'pull_request'
-          uses: codescan-io/codescan-scanner-action@1.2
-          with:
-            organization: ‘harsh-pmb’
-            projectKey: ‘autoclaim’
-            login: '48b5818f252d413b7c8dbbbb7e1c2f39eca251e0'
-            args: |
-              sonar.branch.name='master'
-              sonar.branch.target='master'
-              sonar.branch.type=SHORT
-        - name: Upload SARIF file
-          uses: github/codeql-action/upload-sarif@v1
-          with:
-            sarif_file: codescan.sarif
+  devops:
+    name: Build, Unit Test and SonarCloud Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with: {fetch-depth: 0}
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 8
+      - name: Unit & Integration Tests
+        run: mvn clean install
+      - name: Sonar
+        if: success() # always() failure() success()
+        run: >
+          mvn -B verify -DskipTests sonar:sonar
+          -Dsonar.projectKey=com.example:autoclaim
+          -Dsonar.organization=harsh-pmb
+          -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.login=$SONAR_TOKEN
+        env:
+          GITHUB_TOKEN: ${{ secrets.GHP_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
