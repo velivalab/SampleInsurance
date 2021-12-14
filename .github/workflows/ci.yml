@@ -13,7 +13,11 @@ jobs:
     - name: Run Unit Tests
       run: mvn test -Dmaven.test.failure.ignore=true
     - name: Publish Unit Test Report
-      uses: mikepenz/action-junit-report@v2
-      if: always() # always run even if the previous step fails
+      uses: EnricoMi/publish-unit-test-result-action/composite@master
       with:
-          report_paths: '**/TEST-*.xml'
+          commit: ${{ github.event.workflow_run.head_sha }}
+          check_name: Unit Test Results (reference)
+          event_file: artifacts/Event File/event.json
+          event_name: ${{ github.event.workflow_run.event }}
+          files: "artifacts/**/*.xml"
+          log_level: DEBUG
