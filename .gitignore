@@ -1,4 +1,12 @@
-*.class
+.DS_Store
+target/
+.repository
+.settings/
+node/
+node_modules/
+/bin/
+**/bin/
+**/*.iml
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
