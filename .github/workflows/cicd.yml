@@ -22,12 +22,7 @@ jobs:
         run: mvn clean install -DskipTests=true
       
       - name: Run JUnit Tests
-        run: mvn test -Dmaven.test.failure.ignore=true
-      
-      - name: Publish Unit Test Report
-        uses: EnricoMi/publish-unit-test-result-action/composite@v1
-        with:
-            files: ./**/TEST-*.xml
+        run: mvn test -Dmaven.test.failure.ignore=true surefire-report:report
       
       - name: Sonar Cloud Analysis
         if: success() # always() failure() success()
