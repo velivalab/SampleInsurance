@@ -14,12 +14,12 @@ jobs:
   report:
       name: Run and Publish Unit Test Report
       needs: build
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-latest 
       steps:
       - name: Run Unit Tests
-        run: mvn test -Dmaven.test.failure.ignore=true -DskipTests=false
-      - name: Publish Unit Test Report 
-      - uses: mikepenz/action-junit-report@v2
+        run: mvn test -Dmaven.test.failure.ignore=true
+      - name: Publish Unit Test Report
+        uses: mikepenz/action-junit-report@v2
         if: always() # always run even if the previous step fails
         with:
           report_paths: '**/TEST-*.xml'
