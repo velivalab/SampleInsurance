@@ -2,6 +2,11 @@ name: CI_CD
 on:
   push:
     branches: ['develop', 'master']
+  workflow_dispatch:
+  
+env:
+  commits: '[{"commitId": "${{ github.sha }}" }]'
+  
 jobs:
   build:
     name: Build, Unit Test and SonarCloud Scan
@@ -25,6 +30,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GHP_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Send ServiceNow Notification
+        uses: rapdev-io/sn-devops-notification@v1
+        with:
+          instance-name: ${{ secrets.INSTANCE_NAME }}
+          devops-integration-user-name: ${{ secrets.DEVOPS_INTEGRATION_USER_NAME }}
+          devops-integration-user-pass: ${{ secrets.DEVOPS_INTEGRATION_USER_PASS }}
+          tool-id: ${{ secrets.TOOL_ID}}
+          context-github: ${{ toJSON(github) }}
+          state: 'Build'
+          commits: ${{ env.commits }}
           
   integrationTest:
     needs: build
