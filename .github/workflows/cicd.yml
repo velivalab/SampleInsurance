@@ -12,8 +12,12 @@ jobs:
       run: mvn clean install -DskipTests=true
     - name: Run Unit Tests
       run: mvn test -Dmaven.test.failure.ignore=true -DskipTests=false
-    - name: Publish Unit Test Report
-      uses: mikepenz/action-junit-report@v2
-      if: always() # always run even if the previous step fails
-      with:
+      
+  report:
+      name: Publish Unit Test Report
+      runs-on: ubuntu-latest
+      steps:
+      - uses: mikepenz/action-junit-report@v2
+        if: always() # always run even if the previous step fails
+        with:
           report_paths: '**/TEST-*.xml'
