@@ -23,6 +23,13 @@ jobs:
       
       - name: Run JUnit Tests
         run: mvn test -Dmaven.test.failure.ignore=true surefire-report:report
+        
+      - name: Publish JUnit Test Report
+        if: always()
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: 'junit-test-report'
+          path: target/surefire-reports/emailable-report.html
       
       - name: Sonar Cloud Analysis
         if: success() # always() failure() success()
@@ -35,6 +42,13 @@ jobs:
         env:
             GITHUB_TOKEN: ${{ secrets.GHP_TOKEN }}
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            
+      - name: Publish Build Artifact
+        if: always()
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: 'artifact'
+          path: target/autoclaim.war
           
   integrationTest:
     needs: build
