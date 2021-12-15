@@ -48,8 +48,21 @@ jobs:
     steps:
       - run: echo Run integration tests.
       
-  deploy:
+  changeControl:
     needs: integrationTest
+    name: Change Control
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for change approval to succeed
+        uses: lewagon/wait-on-check-action@v1.0.0
+        with:
+          ref: ${{ github.ref }}
+          running-workflow-name: 'Change Control'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 3600    
+  
+  deploy:
+    needs: changeControl
     name: Deploy
     runs-on: ubuntu-latest
     steps:
