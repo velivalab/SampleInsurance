@@ -4,6 +4,15 @@ on:
   push:
     branches: ['master']
   workflow_dispatch:
+    inputs:
+      change:
+        description: 'Change Request'
+        required: true
+        default: 'To be created'
+      status:
+        description: 'Change Approval Status'
+        required: true
+        default: 'In Progress'
 
 jobs:
   build:
@@ -58,19 +67,15 @@ jobs:
         with:
           ref: ${{ github.ref }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 3600    
+          wait-interval: 3600
+      - run: |
+          echo "Change Request ID ${{ github.event.inputs.change }}!"
+          echo "- approval status is ${{ github.event.inputs.status }}!"
   
   deploy:
-    if: startsWith(github.sha, github.event.client_payload.text)
+    if: ${{ github.event.inputs.status }} == 'approved'
+    needs: changeControl
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - run: echo Wait for Change Control.
-      
-      - name: Wait for change control to succeed
-        uses: lewagon/wait-on-check-action@v1.0.0
-        with:
-          ref: ${{ github.ref }}
-          check-name: changeControl
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 3600
+      - run: echo Run deployment.
