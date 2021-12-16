@@ -64,16 +64,18 @@ jobs:
     steps:
       - name: Wait for change approval to succeed
         uses: lewagon/wait-on-check-action@v1.0.0
+        env:
+            GITHUB_TOKEN: ${{ secrets.GHP_TOKEN }}
         with:
           ref: ${{ github.ref }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 10
+          wait-interval: 2
       - run: |
-          echo "Change Request ID ${{fromJSON(github.event.payload.inputs.change)}}!"
-          echo "- approval status is ${{fromJSON(github.event.payload.inputs.status)}}!"
+          echo "Change Request ID ${{ github.event.inputs.change }}"
+          echo "- approval status is ${{ github.event.inputs.status }}"
   
   deploy:
-    if: ${{fromJSON(github.event.payload.inputs.status)}} == 'approved'
+    if: ${{ github.event.inputs.status }} == 'approved'
     needs: changeControl
     name: Deploy
     runs-on: ubuntu-latest
