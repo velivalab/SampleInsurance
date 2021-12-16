@@ -5,10 +5,6 @@ on:
     branches: ['master']
   workflow_dispatch:
     inputs:
-      change:
-        description: 'Change Request'
-        required: true
-        default: 'To be created'
       status:
         description: 'Change Approval Status'
         required: true
@@ -70,9 +66,7 @@ jobs:
           ref: ${{ github.ref }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 2
-      - run: |
-          echo "Change Request ID ${{ github.event.inputs.change }}"
-          echo "- approval status is ${{ github.event.inputs.status }}"
+      - run: echo "- approval status is ${{ github.event.inputs.status }}"
   
   deploy:
     if: ${{ github.event.inputs.status }} == 'approved'
