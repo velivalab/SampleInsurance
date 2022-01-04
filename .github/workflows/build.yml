@@ -1,0 +1,21 @@
+name: build
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: ./library/buildAndPublish
+      - id: getPublishedLibraryURLs
+        run: echo ::set-output name=URLs::'["https://www.example.org/file1", "https://www.example.org/file2"]'
+
+      - uses: ViliusSutkus89/WaitForURLsToBeAvailable@v1
+        with:
+          URLs: ${{ steps.getPublishedLibraryURLs.outputs.URLs }}
+
+      - uses: ViliusSutkus89/WaitForURLsToBeAvailable@v1
+        with:
+          URLs: '["https://www.example.org/file3", "https://www.example.org/file4"]'
+
+      - run: ./applicationDependingOnPublishedLibrary/build  
