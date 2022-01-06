@@ -1,0 +1,36 @@
+
+name: changedemo
+on:
+  check_suite:
+    types:
+      - completed
+
+jobs:
+
+    steps:
+    - name: Setup JDK 11 for Sonar Cloud
+        uses: actions/setup-java@v1
+        with:
+            java-version: 11
+      
+      - name: Maven Build
+        run: mvn clean install -DskipTests=true
+      
+      - name: Run JUnit Tests
+        run: mvn test -Dmaven.test.failure.ignore=true surefire-report:report
+
+    - name: Wait for Change Approval
+      uses: Anthchirp/action-wait-for-check@4699210ccc66e2a13260803fadbb77085421b891
+      id: wait-for-change-approval
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        checkName: Change Approval
+        ref: ${{ github.event.check_suite.head_sha }}
+        intervalSeconds: 30
+        timeoutSeconds: 120
+
+    - name: Deploy
+      if: steps.wait-for-change-approval.outputs.conclusion == 'success'
+      uses: Anthchirp/action-wait-for-check@4699210ccc66e2a13260803fadbb77085421b891
+      run: echo Deployment triggered
+    
