@@ -1,27 +1,64 @@
-
 name: changedemo
+
 on:
-  check_suite:
-    types:
-      - completed
+  push:
+    branches: ['master']
+  workflow_dispatch:
+    inputs:
+      status:
+        description: 'Change Approval Status'
+        required: true
+        default: 'In Progress'
 
 jobs:
   build:
-    name: Build and Deployment
+    name: Build
     runs-on: ubuntu-latest
     steps:
-    - name: Setup JDK 11 for Sonar Cloud
-      uses: actions/setup-java@v1
-      with:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      
+      - name: Setup JDK 11 for Sonar Cloud
+        uses: actions/setup-java@v1
+        with:
             java-version: 11
       
-    - name: Maven Build
-      run: mvn clean install -DskipTests=true
+      - name: Maven Build
+        run: mvn clean install -DskipTests=true
       
-    - name: Run JUnit Tests
-      run: mvn test -Dmaven.test.failure.ignore=true surefire-report:report
+      - name: Run JUnit Tests
+        run: mvn test -Dmaven.test.failure.ignore=true surefire-report:report
+        
+      - name: Sonar Cloud Analysis
+        if: success() # always() failure() success()
+        run: >
+            mvn -B verify -DskipTests sonar:sonar
+            -Dsonar.projectKey=com.example:autoclaim
+            -Dsonar.organization=harsh-pmb
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.login=$SONAR_TOKEN
+        env:
+            GITHUB_TOKEN: ${{ secrets.GHP_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            
+      - name: View context attributes
+        uses: actions/github-script@v5
+        with:
+          script: console.log(context)
+          
+  integrationTest:
+    needs: build
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo Run integration tests.
 
-    - name: Wait for Change Approval
+  deploy:
+    runs-on: ubuntu-latest
+    needs: integrationTest
+    name: Deploy
+    steps:
+    - name: Change Approval
       uses: Anthchirp/action-wait-for-check@4699210ccc66e2a13260803fadbb77085421b891
       id: wait-for-change-approval
       with:
@@ -30,9 +67,11 @@ jobs:
         ref: ${{ github.event.check_suite.head_sha }}
         intervalSeconds: 30
         timeoutSeconds: 120
-
-    - name: Deploy
+        
+    - name: Deployment
       if: steps.wait-for-change-approval.outputs.conclusion == 'success'
-      uses: Anthchirp/action-wait-for-check@4699210ccc66e2a13260803fadbb77085421b891
-      run: echo Deployment triggered
-    
+      id: deployment
+      run: 
+          echo Change is approved
+          echo Deployment in progress
+  
