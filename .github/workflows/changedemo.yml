@@ -65,8 +65,8 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         checkName: Change Approval
         ref: ${{ github.event.check_suite.head_sha }}
-        intervalSeconds: 30
-        timeoutSeconds: 120
+        intervalSeconds: 1800
+        timeoutSeconds: 3600
         
     - name: Deployment
       if: steps.wait-for-change-approval.outputs.conclusion == 'success'
