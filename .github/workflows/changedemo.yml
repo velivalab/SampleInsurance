@@ -53,25 +53,26 @@ jobs:
     steps:
       - run: echo Run integration tests.
 
-  deploy:
+  change:
     runs-on: ubuntu-latest
     needs: integrationTest
-    name: Deploy
+    name: ChangeApproval
     steps:
-    - name: Change Approval
+    - name: ChangeApproval
       uses: Anthchirp/action-wait-for-check@4699210ccc66e2a13260803fadbb77085421b891
       id: wait-for-change-approval
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        checkName: Change Approval
+        checkName: ChangeApproval
         ref: ${{ github.event.check_suite.head_sha }}
         intervalSeconds: 1800
         timeoutSeconds: 3600
         
-    - name: Deployment
-      if: steps.wait-for-change-approval.outputs.conclusion == 'success'
-      id: deployment
-      run: 
-          echo Change is approved
-          echo Deployment in progress
+  deploy:
+      runs-on: ubuntu-latest
+      needs: change
+      if: change.steps.wait-for-change-approval.outputs.conclusion == 'success'
+      steps:
+      - name: deploy
+        run: echo Deployment in progress
   
