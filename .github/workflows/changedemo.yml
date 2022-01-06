@@ -71,6 +71,4 @@ jobs:
     - name: Deployment
       if: steps.wait-for-change-approval.outputs.conclusion == 'success'
       id: deployment
-      run: 
-          echo Change is approved
-          echo Deployment in progress
+      run: echo Deployment in progress
