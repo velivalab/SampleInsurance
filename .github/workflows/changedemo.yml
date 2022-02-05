@@ -29,11 +29,11 @@ jobs:
         run: mvn test -Dmaven.test.failure.ignore=true surefire-report:report
         
       - name: Publish test results
-        uses: EnricoMi/publish-unit-test-result-action@v1.28
+        uses: mikepenz/action-junit-report@v2
         if: always()
         with:
-          github_token: ${{ secrets.GHP_TOKEN }}
-          files: target/surefire-reports/TEST-*.xml
+          token: ${{ secrets.GHP_TOKEN }}
+          report_paths: 'target/surefire-reports/TEST-*.xml'
         
       - name: Sonar Cloud Analysis
         if: success() # always() failure() success()
