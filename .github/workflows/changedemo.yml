@@ -32,7 +32,6 @@ jobs:
         uses: mikepenz/action-junit-report@v2
         if: always()
         with:
-          token: ${{ secrets.GHP_TOKEN }}
           report_paths: 'target/surefire-reports/TEST-*.xml'
         
       - name: Sonar Cloud Analysis
