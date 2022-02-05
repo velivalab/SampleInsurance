@@ -58,17 +58,4 @@ jobs:
     needs: integrationTest
     name: Deploy
     steps:
-    - name: Change Approval
-      uses: Anthchirp/action-wait-for-check@4699210ccc66e2a13260803fadbb77085421b891
-      id: wait-for-change-approval
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        checkName: Change Approval
-        ref: ${{ github.event.check_suite.head_sha }}
-        intervalSeconds: 1800
-        timeoutSeconds: 3600
-        
-    - name: Deployment
-      if: steps.wait-for-change-approval.outputs.conclusion == 'success'
-      id: deployment
-      run: echo Deployment in progress
+      - run: echo Deployment Completed.
