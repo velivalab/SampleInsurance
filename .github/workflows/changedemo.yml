@@ -3,12 +3,11 @@ name: changedemo
 on:
   push:
     branches: ['master']
+  pull_request:
+    branches:
+      - master
   workflow_dispatch:
-    inputs:
-      status:
-        description: 'Change Approval Status'
-        required: true
-        default: 'In Progress'
+  
 
 jobs:
   build:
@@ -40,11 +39,6 @@ jobs:
         env:
             GITHUB_TOKEN: ${{ secrets.GHP_TOKEN }}
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-            
-      - name: View context attributes
-        uses: actions/github-script@v5
-        with:
-          script: console.log(context)
           
   integrationTest:
     needs: build
