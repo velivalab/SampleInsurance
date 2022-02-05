@@ -28,7 +28,7 @@ jobs:
       - name: Run JUnit Tests
         run: mvn test -Dmaven.test.failure.ignore=true surefire-report:report
         
-      - name: Publish test results
+      - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1.28
         if: always()
         with:
