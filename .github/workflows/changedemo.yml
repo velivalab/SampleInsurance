@@ -2,7 +2,7 @@ name: changedemo
 
 on:
   push:
-    branches: ['master']
+    branches: ['feature/demo']
   pull_request:
     branches:
       - master
@@ -27,6 +27,13 @@ jobs:
       
       - name: Run JUnit Tests
         run: mvn test -Dmaven.test.failure.ignore=true surefire-report:report
+        
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v1.6
+        if: always()
+        with:
+          github_token: ${{ secrets.GHP_TOKEN }}
+          files: target/surefire-reports/junitreports/*.xml
         
       - name: Sonar Cloud Analysis
         if: success() # always() failure() success()
