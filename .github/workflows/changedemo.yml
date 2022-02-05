@@ -32,7 +32,7 @@ jobs:
         uses: mikepenz/action-junit-report@v2
         if: always()
         with:
-          report_paths: 'target/surefire-reports/TEST-*.xml'
+          report_paths: 'target/surefire-reports/testng-results.xml'
         
       - name: Sonar Cloud Analysis
         if: success() # always() failure() success()
