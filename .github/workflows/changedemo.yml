@@ -28,11 +28,11 @@ jobs:
       - name: Run JUnit Tests
         run: mvn test -Dmaven.test.failure.ignore=true surefire-report:report
         
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1.28
+      - name: Publish test results
+        uses: mikepenz/action-junit-report@v2
         if: always()
         with:
-          files: 'target/surefire-reports/TEST-*.xml'
+          report_paths: 'target/surefire-reports/TEST-*.xml'
         
       - name: Sonar Cloud Analysis
         if: success() # always() failure() success()
