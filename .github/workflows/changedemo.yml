@@ -33,7 +33,7 @@ jobs:
         if: always()
         with:
           github_token: ${{ secrets.GHP_TOKEN }}
-          files: target/**/*.xml
+          files: target/surefire-reports/TEST-*.xml
         
       - name: Sonar Cloud Analysis
         if: success() # always() failure() success()
