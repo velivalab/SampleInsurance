@@ -23,7 +23,7 @@ jobs:
       - name: Run JUnit Tests
         run: |
              mvn test -Dmaven.test.failure.ignore=true surefire-report:report
-             echo step summary >> $GITHUB_STEP_SUMMARY
+             echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
         
           
   integrationTest:
